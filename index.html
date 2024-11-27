@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Interactive App</title>
+</head>
+<body>
+<div id="app" class="container">
+    <header>
+        <h1>Explore Vue.js</h1>
+    </header>
+    <main>
+        <section class="card">
+            <div class="image-wrapper">
+                <img :src="items[index].imagepath" :alt="items[index].title" class="image">
+            </div>
+
+            <h2 v-if="!isFlipped">{{ items[index].title }}</h2>
+            <p v-else>{{ items[index].description }}</p>
+        </section>
+        <div class="buttons">
+            <button @click="navigate(-1)">Previous</button>
+            <button @click="navigate(1)">Next</button>
+        </div>
+        <button @click="toggle" class="toggle-btn">Toggle View</button>
+    </main>
+    <footer>&copy; {{ currentYear }} Interactive App</footer>
+</div>
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script src="data/data.js"></script>
+<script>
+    const app = Vue.createApp({
+        data() {
+            return {
+                items,
+                index: 0,
+                isFlipped: false,
+                currentYear: new Date().getFullYear()
+            };
+        },
+        methods: {
+            toggle() {
+                this.isFlipped = !this.isFlipped;
+            },
+            navigate(direction) {
+                const newIndex = this.index + direction;
+                if (newIndex >= 0 && newIndex < this.items.length) {
+                    this.index = newIndex;
+                    this.isFlipped = false;
+                }
+            }
+        }
+    });
+    app.mount("#app");
+</script>
+</body>
+</html>
